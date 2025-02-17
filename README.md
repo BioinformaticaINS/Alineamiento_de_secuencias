@@ -219,15 +219,10 @@ Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más
      - **Penalización por abrir un gap (gap open):** Penaliza el inicio de un espacio.
      - **Penalización por extender un gap (gap extend):** Penaliza cada espacio adicional después del primero.
    - Ejemplo:
-     - Gap open: -10
-     - Gap extend: -1
+     - Gap open: `-11`
+     - Gap extend: `-1`
    - La penalización por extensión de un espacio es típicamente mucho menor que la penalización por abrir uno, lo que tiene una justificación biológica.
-
----
-
-### 5. **Matrices normalizadas**
-   - Algunas matrices están normalizadas para facilitar la comparación de puntuaciones entre diferentes alineamientos. Esto es especialmente útil cuando se comparan secuencias de longitudes muy diferentes.
-
+   - 
 ---
 
 ### Resumen de los tipos de matrices
@@ -241,17 +236,71 @@ Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más
 | **Especializadas**        | Casos específicos (dominios proteicos, membranas, etc.).                      | Matrices personalizadas.         |
 | **Con penalización gaps** | Define cómo se penalizan los espacios en un alineamiento.                     | Gap open: -10, Gap extend: -1.   |
 
+
+### ¿Cómo elegimos la matriz correcta?
+
+La matriz de sustitución define la puntuación de cada coincidencia y desajuste entre elementos de las secuencias (aminoácidos o nucleótidos), lo cual afecta drásticamente en el alineamiento. Aquí tienes algunos ejemplos:
+
+- **Matrices para ADN:** Existen matrices específicas para alineamientos de secuencias de ADN, como EDNAFULL, que es una matriz estándar para comparar nucleótidos.
+  
+- **Matrices para proteínas:** Para proteínas, se utilizan matrices BLOSUM (p. ej., BLOSUM30, BLOSUM62, BLOSUM90) o PAM. Cada matriz tiene sus propias particularidades en cuanto a la puntuación de coincidencias y desajustes. Generalmente:
+   - **BLOSUM30** es útil para secuencias distantes (más permisiva con desajustes).
+   - **BLOSUM90** es más restrictiva y adecuada para secuencias más similares.
+
+Selección de la Matriz de Puntuación de Similitud Correcta por William Pearson, el autor del programa FASTA.
+
+Aquí hay algunas líneas del resumen:
+
+Si bien las matrices “deep” proporcionan búsquedas de similitud muy sensibles, también requieren alineaciones de secuencia más largas y, a veces, pueden producir una sobreextensión de alineamiento en regiones no homólogas. Las matrices de puntuación más superficiales son más efectivas cuando se buscan dominios proteicos cortos, o cuando el objetivo es limitar el alcance de la búsqueda a secuencias que probablemente sean ortólogas entre organismos recientemente divergentes.
+
+![image](figures/ortologos_paralogos.png)
+
+
+Del mismo modo, en las búsquedas de ADN, los parámetros de coincidencia y desajuste en las búsquedas de ADN reflejan una especie de "retroceso evolutivo" o antigüedad de la similitud, estableciendo también límites de dominio en función de las probabilidades de cambio entre nucleótidos a lo largo del tiempo.
+
+### ¿Cómo “veo” la matriz?
+
+`bio align` imprimirá la matriz (cuando utilice valores incorporados):
+
+```bash
+bio align -matrix PAM250 | head -15
+```
+
+impresiones:
+
+```
+#
+# This matrix was produced by "pam" Version 1.0.6 [28-Jul-93]
+#
+# PAM 250 substitution matrix, scale = ln(2)/3 = 0.231049
+#
+# Expected score = -0.844, Entropy = 0.354 bits
+#
+# Lowest score = -8, Highest score = 17
+#
+   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  Z  X  *
+A  2 -2  0  0 -2  0  0  1 -1 -1 -2 -1 -1 -3  1  1  1 -6 -3  0  0  0  0 -8
+R -2  6  0 -1 -4  1 -1 -3  2 -2 -3  3  0 -4  0  0 -1  2 -4 -2 -1  0 -1 -8
+N  0  0  2  2 -4  1  1  0  2 -2 -3  1 -2 -3  0  1  0 -4 -2 -2  2  1  0 -8
+D  0 -1  2  4 -5  2  3  1  1 -2 -4  0 -3 -6 -1  0  0 -7 -4 -2  3  3 -1 -8
+C -2 -4 -4 -5 12 -5 -5 -3 -3 -2 -6 -5 -5 -4 -3  0 -2 -8  0 -2 -4 -5 -3 -8
+...
+```
+
+### ¿Por qué los valores de puntuación son números enteros?
+
+En las matrices de sustitución (como BLOSUM o PAM), los valores de puntuación representan la probabilidad relativa de que una sustitución específica ocurra durante la evolución de las secuencias. Esta probabilidad se expresa en términos de logaritmos en base 2 (log2), que son más manejables en alineaciones de secuencias.
+
+**Logaritmos y Probabilidades en Puntuaciones**
+
+Los valores de puntuación se obtienen de la probabilidad de que dos aminoácidos específicos se sustituyan entre sí en relación con la probabilidad de que se alineen al azar.
+
+Al representar las puntuaciones en logaritmos base 2 (log2), podemos expresar el cambio en probabilidad en términos de potencias de 2. Esto facilita la interpretación de las puntuaciones.
+
+Así, una puntuación de 3 implica una probabilidad de sustitución de 2^3 = 8 veces más probable que al azar, mientras que una puntuación de 5 implica una probabilidad de 2^5 = 32 veces. La sustitución con puntuación 3 es cuatro veces más probable que una con puntuación 5.
+
+
 ---
-
-### ¿Cómo elegir la matriz adecuada?
-La elección de la matriz depende de:
-1. **Tipo de secuencia:** ¿Es ADN, ARN o proteína?
-2. **Grado de similitud:** ¿Son secuencias muy similares o distantes?
-3. **Objetivo del estudio:** ¿Es un análisis evolutivo, funcional o estructural?
-
-Por ejemplo:
-- Para alinear secuencias de proteínas moderadamente relacionadas, usa **BLOSUM62**.
-- Para secuencias de ADN, usa **NUC.4.4** o una matriz de identidad.
 
 ## Cómo se muestran los alineamientos
 
@@ -482,68 +531,6 @@ LINE
 IGNE
 ```
 
-### ¿Cómo elegimos la matriz correcta?
-
-La matriz de sustitución define la puntuación de cada coincidencia y desajuste entre elementos de las secuencias (aminoácidos o nucleótidos), lo cual afecta drásticamente en el alineamiento. Aquí tienes algunos ejemplos:
-
-- **Matrices para ADN:** Existen matrices específicas para alineamientos de secuencias de ADN, como EDNAFULL, que es una matriz estándar para comparar nucleótidos.
-  
-- **Matrices para proteínas:** Para proteínas, se utilizan matrices BLOSUM (p. ej., BLOSUM30, BLOSUM62, BLOSUM90) o PAM. Cada matriz tiene sus propias particularidades en cuanto a la puntuación de coincidencias y desajustes. Generalmente:
-   - **BLOSUM30** es útil para secuencias distantes (más permisiva con desajustes).
-   - **BLOSUM90** es más restrictiva y adecuada para secuencias más similares.
-
-Selección de la Matriz de Puntuación de Similitud Correcta por William Pearson, el autor del programa FASTA.
-
-Aquí hay algunas líneas del resumen:
-
-Si bien las matrices “deep” proporcionan búsquedas de similitud muy sensibles, también requieren alineaciones de secuencia más largas y, a veces, pueden producir una sobreextensión de alineamiento en regiones no homólogas. Las matrices de puntuación más superficiales son más efectivas cuando se buscan dominios proteicos cortos, o cuando el objetivo es limitar el alcance de la búsqueda a secuencias que probablemente sean ortólogas entre organismos recientemente divergentes.
-
-![image](figures/ortologos_paralogos.png)
-
-
-Del mismo modo, en las búsquedas de ADN, los parámetros de coincidencia y desajuste en las búsquedas de ADN reflejan una especie de "retroceso evolutivo" o antigüedad de la similitud, estableciendo también límites de dominio en función de las probabilidades de cambio entre nucleótidos a lo largo del tiempo.
-
-### ¿Cómo “veo” la matriz?
-
-`bio align` imprimirá la matriz (cuando utilice valores incorporados):
-
-```bash
-bio align -matrix PAM250 | head -15
-```
-
-impresiones:
-
-```
-#
-# This matrix was produced by "pam" Version 1.0.6 [28-Jul-93]
-#
-# PAM 250 substitution matrix, scale = ln(2)/3 = 0.231049
-#
-# Expected score = -0.844, Entropy = 0.354 bits
-#
-# Lowest score = -8, Highest score = 17
-#
-   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  Z  X  *
-A  2 -2  0  0 -2  0  0  1 -1 -1 -2 -1 -1 -3  1  1  1 -6 -3  0  0  0  0 -8
-R -2  6  0 -1 -4  1 -1 -3  2 -2 -3  3  0 -4  0  0 -1  2 -4 -2 -1  0 -1 -8
-N  0  0  2  2 -4  1  1  0  2 -2 -3  1 -2 -3  0  1  0 -4 -2 -2  2  1  0 -8
-D  0 -1  2  4 -5  2  3  1  1 -2 -4  0 -3 -6 -1  0  0 -7 -4 -2  3  3 -1 -8
-C -2 -4 -4 -5 12 -5 -5 -3 -3 -2 -6 -5 -5 -4 -3  0 -2 -8  0 -2 -4 -5 -3 -8
-...
-```
-
-### ¿Por qué los valores de puntuación son números enteros?
-
-En las matrices de sustitución (como BLOSUM o PAM), los valores de puntuación representan la probabilidad relativa de que una sustitución específica ocurra durante la evolución de las secuencias. Esta probabilidad se expresa en términos de logaritmos en base 2 (log2), que son más manejables en alineaciones de secuencias.
-
-**Logaritmos y Probabilidades en Puntuaciones**
-
-Los valores de puntuación se obtienen de la probabilidad de que dos aminoácidos específicos se sustituyan entre sí en relación con la probabilidad de que se alineen al azar.
-
-Al representar las puntuaciones en logaritmos base 2 (log2), podemos expresar el cambio en probabilidad en términos de potencias de 2. Esto facilita la interpretación de las puntuaciones.
-
-Así, una puntuación de 3 implica una probabilidad de sustitución de 2^3 = 8 veces más probable que al azar, mientras que una puntuación de 5 implica una probabilidad de 2^5 = 32 veces. La sustitución con puntuación 3 es cuatro veces más probable que una con puntuación 5.
-
 ## Entonces quieres alinear secuencias - Alineamiento por pares
 
 El **alineamiento por pares** consiste en alinear dos secuencias, que llamaremos **consulta** (query) y **objetivo** (target). Este proceso es fundamental en bioinformática para comparar y analizar similitudes o diferencias entre secuencias.
@@ -646,7 +633,7 @@ mamba install -c bioconda mafft exonerate lastz
 
 En esta sección exploraremos cómo realizar alineamientos de secuencias utilizando diferentes herramientas. 🧪
 
-## Obteniendo los datos
+### Obteniendo los datos
 
 Para nuestros ejemplos, usaremos datos reales. ¡Primero descarguemos las secuencias! 👇
 
@@ -664,7 +651,7 @@ bio fetch ENST00000288602 > transcript-full.fa
 bio fetch ENST00000288602 --type cds > transcript-cds.fa
 ```
 
-## Analizando las secuencias
+### Analizando las secuencias
 
 Podemos ver estadísticas básicas de estas secuencias con `seqkit`:
 
@@ -686,17 +673,17 @@ transcript-full.fa   FASTA   DNA             1  190,247  190,247  190,247  190,2
 
 ✨ **Nota:** Esta herramienta es excelente para verificar que los datos sean consistentes antes de continuar.
 
-## Herramienta 1: `bio align`
+### Herramienta 1: `bio align`
 
 `bio align` es una herramienta educativa basada en BioPython para aprender alineamientos por pares.
 
-### Características:
+#### Características:
 - Soporta alineamientos locales, globales y semi-globales.
 - Reconoce automáticamente ADN y proteínas.
 - Ideal para alineamientos rápidos y cortos.
 - Limitado para secuencias largas (>10Kb).
 
-### Ejemplo 1: Alineando dos secuencias desde la línea de comandos
+#### Ejemplo 1: Alineando dos secuencias desde la línea de comandos
 
 ```bash
 bio align GATTACA GATCA
@@ -716,7 +703,7 @@ GATCA--
 
 🎯 **Concepto clave:** Observa cómo se calculan las diferencias entre ambas secuencias (identidades, deleciones, etc.).
 
-### Ejemplo 2: Alineando proteínas desde archivos
+#### Ejemplo 2: Alineando proteínas desde archivos
 
 ```bash
 bio align pep1.fa pep2.fa
@@ -730,16 +717,16 @@ Salida esperada:
 # semiglobal: score=6541.0 matrix=BLOSUM62 gapopen=11 gapextend=1
 ```
 
-## Herramienta 2: BLAST
+### Herramienta 2: BLAST
 
 BLAST (Basic Local Alignment Search Tool) es la herramienta más utilizada en bioinformática para alineamientos y búsquedas en bases de datos.
 
-### Características:
+#### Características:
 - Realiza alineamientos locales.
 - Muy eficiente y ampliamente aceptada.
 - Ofrece múltiples formatos de salida.
 
-### Ejemplo 1: Alineando genomas completos
+#### Ejemplo 1: Alineando genomas completos
 
 ```bash
 blastn -query genome1.fa -subject genome2.fa -outfmt 7
@@ -754,7 +741,7 @@ Salida esperada:
 NC_045512.2    MN996532.2 96.14  29877  1130   7  1  29875  1  29855  0.0    48758
 ```
 
-### Ejemplo 2: Alineando proteínas
+#### Ejemplo 2: Alineando proteínas
 
 ```bash
 blastp -query pep1.fa -subject pep2.fa
@@ -786,7 +773,7 @@ Sbjct  1     MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSSTRGVYYPDKVFRSSVLHLTQDLFLPFFS  60
 ...
 ```
 
-### Ejemplo 2: Alineando CDS a Transcritos
+#### Ejemplo 2: Alineando CDS a Transcritos
 
 ```bash
 blastn -query transcript-cds.fa -subject transcript-full.fa  -outfmt 7
@@ -810,16 +797,16 @@ ENST00000288602.11 ENST00000288602.11 100.00 139    0  0  1296   1434   141574 1
 ENST00000288602.11 ENST00000288602.11 100.00 139    0  0  2109   2247   184783 184921 1e-69    257
 ```
 
-## Herramienta 3: Minimap2
+### Herramienta 3: Minimap2
 
 Minimap2 es un alineador altamente eficiente para lecturas largas o genomas completos.
 
-### Características:
+#### Características:
 - Alineamientos semi-globales.
 - Soporta secuencias largas (hasta 100Mb).
 - Produce formatos de salida PAF y SAM.
 
-### Ejemplo: Comparando dos genomas
+#### Ejemplo: Comparando dos genomas
 
 ```bash
 minimap2 -c genome1.fa genome2.fa > alignment.paf
@@ -827,11 +814,11 @@ minimap2 -c genome1.fa genome2.fa > alignment.paf
 
 ---
 
-## Herramienta 4: MAFFT
+### Herramienta 4: MAFFT
 
 MAFFT es un alineador de secuencias múltiples, pero también funciona en modo por pares.
 
-### Ejemplo: Alineando genomas
+#### Ejemplo: Alineando genomas
 
 ```bash
 cat genome1.fa genome2.fa > all.fa
@@ -847,7 +834,7 @@ Puedes usar `bio format` para transformar el alineamiento en un formato más cla
 
 LASTZ es un alineador versátil diseñado para análisis comparativos de genomas.
 
-### Ejemplo:
+#### Ejemplo:
 
 ```bash
 lastz genome1.fa genome2.fa --format=paf
@@ -855,11 +842,11 @@ lastz genome1.fa genome2.fa --format=paf
 
 ---
 
-## Herramienta 6: Exonerate
+### Herramienta 6: Exonerate
 
 Exonerate permite alineamientos versátiles (locales, globales, con y sin gaps).
 
-### Ejemplo:
+#### Ejemplo:
 
 ```bash
 exonerate --model affine:local transcript-cds.fa transcript-full.fa
@@ -867,11 +854,11 @@ exonerate --model affine:local transcript-cds.fa transcript-full.fa
 
 ---
 
-## Herramienta 7: MUMmer
+### Herramienta 7: MUMmer
 
 MUMmer es perfecto para comparar genomas completos rápidamente.
 
-### Ejemplo:
+#### Ejemplo:
 
 ```bash
 nucmer genome1.fa genome2.fa -p genome_alignment
