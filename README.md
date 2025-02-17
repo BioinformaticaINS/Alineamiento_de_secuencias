@@ -197,6 +197,8 @@ Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más
      - **BLOSUM80:** Para secuencias muy similares.
    - Las matrices BLOSUM son más utilizadas que las PAM en la actualidad.
 
+![PAM vs BLOSUM](https://resources.qiagenbioinformatics.com/manuals/clcgenomicsworkbench/650/pam-blosum.png)
+
 #### c) **Matrices especializadas**
    - Algunas matrices están diseñadas para casos específicos, como:
      - **Matrices para dominios proteicos:** Se enfocan en regiones específicas de las proteínas.
@@ -217,6 +219,7 @@ Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más
    - Ejemplo:
      - Gap open: -10
      - Gap extend: -1
+   - La penalización por extensión de un espacio es típicamente mucho menor que la penalización por abrir uno, lo que tiene una justificación biológica.
 
 ---
 
@@ -248,10 +251,6 @@ Por ejemplo:
 - Para alinear secuencias de proteínas moderadamente relacionadas, usa **BLOSUM62**.
 - Para secuencias de ADN, usa **NUC.4.4** o una matriz de identidad.
 
-## Otras propiedades de las matrices de puntuación
-
-Las matrices de puntuación generalmente no incluyen penalizaciones para los espacios. La penalización por extensión de un espacio es típicamente mucho menor que la penalización por abrir uno, lo que tiene una justificación biológica.
-
 ## Cómo se muestran los alineamientos
 
 No existe un formato universal para mostrar alineamientos, pero comúnmente usamos un formato visual con caracteres adicionales para interpretarlas:
@@ -280,7 +279,7 @@ ATGCAAATGACAAAT-CGA
 ATGC---TGATAACTGCGA
 ```
 
-Mientras que la palabra “espacio” es genérica y se refiere a cualquiera de las secuencias, si queremos ser más específicos, podríamos decir que la alineación anterior muestra tres eliminaciones de A y una inserción de G. La palabra “eliminación” significa que la segunda secuencia tiene bases faltantes en comparación con la primera.
+Mientras que la palabra “espacio” es genérica y se refiere a cualquiera de las secuencias, si queremos ser más específicos, podríamos decir que el alineamiento anterior muestra tres deleciones de A y una inserción de G. La palabra “deleción” significa que la segunda secuencia tiene bases faltantes en comparación con la primera.
 
 Podríamos generar y mostrar esta misma alineación al revés:
 
@@ -290,11 +289,11 @@ ATGC---TGATAACTGCGA
 ATGCAAATGACAAAT-CGA
 ```
 
-Esta alineación se describiría ahora como una que contiene tres inserciones de A seguidas posteriormente de una eliminación de G en relación con la secuencia superior. La eliminación en una secuencia es una inserción en la otra; todo depende de lo que trata el estudio.
+Este alineamiento se describiría ahora como: contiene tres inserciones de A seguidas posteriormente de una deleción de G en relación con la secuencia superior. La eliminación en una secuencia es una inserción en la otra; todo depende de lo que trata el estudio.
 
 ## Alineaciones globales y locales
 
-Para ejecutar los ejemplos, instala el paquete `bio` desarrollado para este libro:
+Para ejecutar los ejemplos, instala el paquete `bio`:
 
 ```bash
 pip install bio --upgrade
@@ -302,15 +301,15 @@ pip install bio --upgrade
 
 Puedes leer más sobre cómo funciona el método `bio align` en [https://www.bioinfo.help/bio-align.html](https://www.bioinfo.help/bio-align.html).
 
-### Nota importante sobre alineaciones
+### Nota importante sobre alineamientos
 
-Los algoritmos de alineación en `bio align` utilizan la implementación de BioPython, ideal para uso interactivo y exploratorio al alinear secuencias relativamente cortas (de hasta aproximadamente 30 kb de longitud).
+Los algoritmos de alineamiento en `bio align` utilizan la implementación de BioPython, ideal para uso interactivo y exploratorio al alinear secuencias relativamente cortas (de hasta aproximadamente 30 kb de longitud).
 
 El software especializado en alineación genómica suele operar con órdenes de magnitud más rápidos, aunque ajusta características a cambio de esa mayor velocidad. Dependiendo de tus necesidades, es posible que desees usar uno de los numerosos alineadores disponibles, como: `blast`, `blat`, `fasta36`, `mummer`, `minimap2`, `lastz`, `lastal`, `exonerate`, `vsearch`, `diamond`, etc.
 
 La gran cantidad de opciones de alineadores, junto con el enorme número de parámetros que cada alineador permite personalizar, muestra que las alineaciones son tareas complejas y multifacéticas.
 
-### Cómo realizar una alineación con `bio`
+### Cómo realizar una alineamiento con `bio`
 
 Verifica que el script funcione con:
 
@@ -390,7 +389,7 @@ En cambio, en una alineación global, se alinea la totalidad de ambas secuencias
 
 Aquí, los huecos adicionales se agregan al final de la primera secuencia (`ACTG-`) para que coincida con la longitud de la segunda (`GACTGA`).
 
-Usamos alineaciones globales cuando buscamos un arreglo que maximice las similitudes en toda la longitud de ambas secuencias:
+Usamos alineamientos globales cuando buscamos un arreglo que maximice las similitudes en toda la longitud de ambas secuencias:
 
 ```bash
 bio align THISLINE ISALIGNED --global
@@ -426,19 +425,21 @@ THIS-LI-NE-
 --ISALIGNED
 ```
 
-Tenga en cuenta cuán radicalmente diferente es la segunda alineación de la primera. Todo lo que hicimos fue reducir la pena de abrir una brecha `11`` to7en`. La alineación es más larga pero tiene más huecos. La compensación es fácilmente evidente.
+Tenga en cuenta cuán radicalmente diferente es el segundo alineamiento que de la primera. Todo lo que hicimos fue reducir la pena de abrir una brecha `11` a `7`. El alineamiento es más largo pero tiene más huecos. La compensación es fácilmente evidente.
 
-Recuerde, una alineación encuentra la disposición que maximiza la puntuación de recompensas y penalizaciones en todas las secuencias.
+Recuerde, un alineamiento encuentra la disposición que maximiza la puntuación de recompensas y penalizaciones en todas las secuencias.
 
-### ¿Qué es una alineación local?
+### ¿Qué es un alineamieto local?
 
-**Las alineaciones locales se utilizan cuando necesitamos encontrar la región de similitud máxima entre dos secuencias.** Esto es particularmente útil cuando solo una parte de las secuencias es relevante, por ejemplo, cuando una proteína contiene dominios específicos similares a otras proteínas. Al realizar alineaciones locales, los algoritmos buscan el intervalo de puntuación más alto (es decir, la región donde las secuencias son más similares) y lo reporta. Así, una alineación local puede ser una pequeña parte de cada secuencia, en lugar de intentar alinear todos los elementos de principio a fin.
+**Los alineamientos locales se utilizan cuando necesitamos encontrar la región de similitud máxima entre dos secuencias.** 
+
+Esto es particularmente útil cuando solo una parte de las secuencias es relevante, por ejemplo, cuando una proteína contiene dominios específicos similares a otras proteínas. Al realizar alineamientos locales, los algoritmos buscan el intervalo de puntuación más alto (es decir, la región donde las secuencias son más similares) y lo reporta. Así, un alineamiento local puede ser una pequeña parte de cada secuencia, en lugar de intentar alinear todos los elementos de principio a fin.
 
 ```bash
 bio align THISLINE ISALIGNED --local
 ```
 
-Cuando se ejecuta como arriba, la alineación local generada con los parámetros predeterminados será sorprendentemente corta:
+Cuando se ejecuta como arriba, el alineamiento local generada con los parámetros predeterminados será sorprendentemente corta:
 
 ```
 # seq1 (2) vs seq2 (2)
@@ -481,10 +482,10 @@ IGNE
 
 ### ¿Cómo elegimos la matriz correcta?
 
-La matriz de sustitución define la puntuación de cada coincidencia y desajuste entre elementos de las secuencias (aminoácidos o nucleótidos), lo cual afecta drásticamente la alineación. Aquí tienes algunos ejemplos:
+La matriz de sustitución define la puntuación de cada coincidencia y desajuste entre elementos de las secuencias (aminoácidos o nucleótidos), lo cual afecta drásticamente en el alineamiento. Aquí tienes algunos ejemplos:
 
-- **Matrices para ADN:** Existen matrices específicas para alineaciones de secuencias de ADN, como EDNAFULL, que es una matriz estándar para comparar nucleótidos.
-- 
+- **Matrices para ADN:** Existen matrices específicas para alineamientos de secuencias de ADN, como EDNAFULL, que es una matriz estándar para comparar nucleótidos.
+  
 - **Matrices para proteínas:** Para proteínas, se utilizan matrices BLOSUM (p. ej., BLOSUM30, BLOSUM62, BLOSUM90) o PAM. Cada matriz tiene sus propias particularidades en cuanto a la puntuación de coincidencias y desajustes. Generalmente:
    - **BLOSUM30** es útil para secuencias distantes (más permisiva con desajustes).
    - **BLOSUM90** es más restrictiva y adecuada para secuencias más similares.
@@ -540,7 +541,6 @@ Los valores de puntuación se obtienen de la probabilidad de que dos aminoácido
 Al representar las puntuaciones en logaritmos base 2 (log2), podemos expresar el cambio en probabilidad en términos de potencias de 2. Esto facilita la interpretación de las puntuaciones.
 
 Así, una puntuación de 3 implica una probabilidad de sustitución de 2^3 = 8 veces más probable que al azar, mientras que una puntuación de 5 implica una probabilidad de 2^5 = 32 veces. La sustitución con puntuación 3 es cuatro veces más probable que una con puntuación 5.
-
 
 ## Entonces quieres alinear secuencias - Alineamiento por pares
 
@@ -878,9 +878,104 @@ show-coords -r genome_alignment.delta
 
 ---
 
-### ¡Manos a la obra! 🚀  
-Estas herramientas son esenciales para realizar alineamientos en bioinformática. Experimenta con cada una para entender sus diferencias y casos de uso. ¿Cuál te parece más útil? 😊
+## **Alineamiento Múltiple de Secuencias (MSA)**
+
+### **¿Qué es el alineamiento múltiple?**
+El alineamiento múltiple consiste en alinear **tres o más secuencias** (de ADN, ARN o proteínas) de manera que se maximice la similitud entre ellas. Esto permite identificar regiones conservadas, patrones evolutivos y relaciones funcionales entre las secuencias.
+
+#### Ejemplo:
+```
+Secuencia 1: ATGCTAGCT
+Secuencia 2: ATG-TAG-T
+Secuencia 3: AT--TAGCT
+```
+
+---
+
+### **Importancia del alineamiento múltiple**
+- **Identificación de regiones conservadas:** Útil para encontrar dominios funcionales en proteínas o secuencias regulatorias en ADN.
+- **Estudios evolutivos:** Permite reconstruir árboles filogenéticos y analizar relaciones entre especies.
+- **Predicción de estructura y función:** Ayuda a inferir la estructura 3D de proteínas y su función biológica.
+- **Diseño de primers:** En biología molecular, se usa para diseñar cebadores (primers) que amplifiquen regiones conservadas.
+
+---
+
+### **Métodos para realizar alineamientos múltiples**
+
+#### a) **Métodos progresivos**
+- **Cómo funcionan:** Se construye un alineamiento gradual, comenzando con las secuencias más similares y añadiendo las menos similares.
+- **Ventajas:** Rápido y eficiente para un número moderado de secuencias.
+- **Desventajas:** Depende del orden en que se añaden las secuencias, lo que puede llevar a errores.
+- **Herramientas populares:** **Clustal Omega**, **MAFFT**, **T-Coffee**.
+
+#### b) **Métodos basados en consenso**
+- **Cómo funcionan:** Usan un perfil de consenso generado a partir de alineamientos pareados para guiar el alineamiento múltiple.
+- **Ventajas:** Más precisos que los métodos progresivos.
+- **Desventajas:** Computacionalmente más costosos.
+- **Herramientas populares:** **MUSCLE**, **ProbCons**.
+
+#### c) **Métodos basados en árboles filogenéticos**
+- **Cómo funcionan:** Utilizan un árbol filogenético para guiar el alineamiento, asegurando que las secuencias más relacionadas se alineen primero.
+- **Ventajas:** Muy precisos para estudios evolutivos.
+- **Desventajas:** Requieren mucho tiempo y recursos computacionales.
+- **Herramientas populares:** **PRANK**, **PASTA**.
+
+#### d) **Métodos basados en modelos ocultos de Markov (HMM)**
+- **Cómo funcionan:** Usan modelos estadísticos para representar patrones conservados en las secuencias.
+- **Ventajas:** Muy útiles para alinear secuencias con baja similitud.
+- **Desventajas:** Complejos de implementar y requieren entrenamiento previo.
+- **Herramientas populares:** **HMMER**, **Kalign**.
+
+---
+
+### **Formatos de salida**
+Los alineamientos múltiples se pueden guardar en diferentes formatos, como:
+- **FASTA:** Formato simple y ampliamente utilizado.
+- **CLUSTAL:** Formato legible con información de conservación.
+- **PHYLIP:** Usado para análisis filogenéticos.
+- **Stockholm:** Usado en bases de datos como Pfam.
+
+---
+
+### **Aplicaciones del alineamiento múltiple**
+- **Análisis filogenético:** Reconstrucción de árboles evolutivos.
+- **Identificación de motivos conservados:** En proteínas o ADN.
+- **Diseño de primers:** Para PCR o secuenciación.
+- **Predicción de estructura:** Inferir la estructura 3D de proteínas.
+
+### **Consejos para realizar buenos alineamientos múltiples**
+1. **Preprocesa las secuencias:** Elimina regiones no informativas (por ejemplo, intrones en ADN).
+2. **Elige la herramienta adecuada:** Dependiendo del número y tipo de secuencias.
+3. **Verifica el alineamiento:** Usa herramientas de visualización como **Jalview** o **AliView**.
+4. **Ajusta parámetros:** Prueba diferentes matrices de sustitución y penalizaciones por gaps.
 
 ## Resumen
 
-El alineamiento de secuencias es una herramienta esencial en bioinformática que nos permite comparar secuencias para identificar similitudes y diferencias. Dependiendo del tipo de alineamiento (global, local o semi-global) y la puntuación utilizada, podemos obtener resultados diferentes. Herramientas como BLAST, MAFFT y Minimap2 nos ayudan a realizar estos alineamientos de manera eficiente.
+| **Herramienta** | **Propósito principal**                                                                 | **Tipo de alineamiento**                        | **Entradas típicas**                          | **Fortalezas**                                                                                   | **Limitaciones**                                                                                     |
+|------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| **Bio Align**   | Alineamiento múltiple de secuencias biológicas.                                         | Global o local, dependiendo de la configuración.| Secuencias cortas o medianas (ADN, ARN, proteínas). | Herramienta general para análisis básicos; fácil de usar.                                        | No es ideal para grandes volúmenes de datos o genomas completos.                                    |
+| **BLAST**       | Búsqueda rápida de similitudes locales entre secuencias.                               | Local.                                          | Secuencias individuales o pequeños conjuntos.  | Ampliamente utilizado, rápido y confiable para búsquedas de homología.                           | No está optimizado para alineamientos a gran escala o genomas completos.                            |
+| **MUMmer**      | Alineamiento de genomas completos o fragmentos largos.                                 | Global o local, con énfasis en coincidencias exactas. | Genomas completos o fragmentos largos.        | Muy eficiente para comparar genomas cercanamente relacionados; maneja grandes volúmenes de datos. | Menos adecuado para secuencias muy divergentes o proteínas.                                          |
+| **Exonerate**   | Alineamiento de secuencias con modelos específicos, como genes o proteínas.             | Local o semiglobal.                             | Secuencias de ADN, ARN o proteínas.           | Flexible y adaptable a diferentes modelos biológicos; útil para anotación génica.                | Puede ser lento para grandes conjuntos de datos; requiere más configuración que otras herramientas. |
+| **MAFFT**       | Alineamiento múltiple de secuencias, especialmente para análisis filogenéticos.         | Global o local.                                 | Secuencias de ADN, ARN o proteínas.           | Preciso y eficiente para alineamientos múltiples; maneja grandes conjuntos de datos.             | Puede ser complejo para usuarios principiantes debido a sus múltiples opciones de configuración.     |
+| **LASTZ**       | Búsqueda de similitudes locales entre genomas completos o fragmentos largos.            | Local.                                          | Genomas completos o fragmentos largos.        | Eficiente para comparar genomas grandes; flexible en la detección de similitudes divergentes.     | Requiere más tiempo de procesamiento en comparación con herramientas como Minimap2.                 |
+| **Minimap2**    | Alineamiento rápido de secuencias largas (lecturas de nanoporos, PacBio) o genomas.     | Local o global, dependiendo de la configuración.| Lecturas largas, transcriptomas o genomas.    | Extremadamente rápido y eficiente para datos de secuenciación de tercera generación.              | Menos preciso para alineamientos muy específicos o análisis filogenéticos detallados.               |
+| **MUSCLE**      | Alineamiento múltiple de secuencias, especialmente para análisis filogenéticos rápidos. | Global.                                         | Secuencias de ADN, ARN o proteínas.           | Rápido y preciso para alineamientos múltiples; fácil de usar y accesible.                        | Menos eficiente para conjuntos de datos extremadamente grandes o secuencias muy divergentes.        |
+| **Clustal**     | Alineamiento múltiple de secuencias, con énfasis en precisión.                          | Global.                                         | Secuencias de ADN, ARN o proteínas.           | Fácil de usar; produce alineamientos precisos para conjuntos pequeños o medianos.                | Puede ser lento y menos eficiente para grandes conjuntos de datos; menos flexible que MAFFT o MUSCLE. |
+
+---
+
+### Resumen de uso recomendado:
+- **Bio Align**: Para análisis básicos y educativos.
+- **BLAST**: Para búsquedas rápidas de homología en bases de datos.
+- **MUMmer**: Para comparaciones de genomas completos o fragmentos largos.
+- **Exonerate**: Para alineamientos específicos, como la anotación de genes.
+- **MAFFT**: Para alineamientos múltiples precisos en estudios filogenéticos.
+- **LASTZ**: Para comparaciones detalladas de genomas grandes.
+- **Minimap2**: Para datos de secuenciación de tercera generación y alineamientos rápidos.
+- **MUSCLE**: Para alineamientos múltiples rápidos y precisos, especialmente en análisis filogenéticos.
+- **Clustal**: Para alineamientos múltiples precisos en conjuntos pequeños o medianos de secuencias.
+
+---
+
+¡MUCHAS GRACIAS!
