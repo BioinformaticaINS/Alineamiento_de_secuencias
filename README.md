@@ -236,7 +236,6 @@ Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más
 | **Especializadas**        | Casos específicos (dominios proteicos, membranas, etc.).                      | Matrices personalizadas.         |
 | **Con penalización gaps** | Define cómo se penalizan los espacios en un alineamiento.                     | Gap open: -10, Gap extend: -1.   |
 
-
 ### ¿Cómo elegimos la matriz correcta?
 
 La matriz de sustitución define la puntuación de cada coincidencia y desajuste entre elementos de las secuencias (aminoácidos o nucleótidos), lo cual afecta drásticamente en el alineamiento. Aquí tienes algunos ejemplos:
@@ -250,9 +249,6 @@ La matriz de sustitución define la puntuación de cada coincidencia y desajuste
 En su artículo "Selecting the Right Similarity-Scoring Matrix", Pearson discute cómo las matrices "profundas" (como BLOSUM62) son útiles para detectar homologías distantes, pero pueden generar alineamientos sobreextendidos en regiones no homólogas. Por otro lado, las matrices "superficiales" son más efectivas para dominios proteicos cortos o secuencias recientemente divergentes (https://pubmed.ncbi.nlm.nih.gov/24509512/)
 
 ![image](https://biodataprog.github.io/GEN220_2019/Bioinformatics/images/orthologs.gif)
-
-
-Del mismo modo, en las búsquedas de ADN, los parámetros de coincidencia y desajuste en las búsquedas de ADN reflejan una especie de "retroceso evolutivo" o antigüedad de la similitud, estableciendo también límites de dominio en función de las probabilidades de cambio entre nucleótidos a lo largo del tiempo.
 
 ### ¿Cómo “veo” la matriz?
 
@@ -294,7 +290,6 @@ Los valores de puntuación se obtienen de la probabilidad de que dos aminoácido
 Al representar las puntuaciones en logaritmos base 2 (log2), podemos expresar el cambio en probabilidad en términos de potencias de 2. Esto facilita la interpretación de las puntuaciones.
 
 Así, una puntuación de 3 implica una probabilidad de sustitución de 2^3 = 8 veces más probable que al azar, mientras que una puntuación de 5 implica una probabilidad de 2^5 = 32 veces. La sustitución con puntuación 3 es cuatro veces más probable que una con puntuación 5.
-
 
 ---
 
@@ -338,7 +333,7 @@ ATGCAAATGACAAAT-CGA
 
 Este alineamiento se describiría ahora como: contiene tres inserciones de A seguidas posteriormente de una deleción de G en relación con la secuencia superior. La eliminación en una secuencia es una inserción en la otra; todo depende de lo que trata el estudio.
 
-## Alineaciones globales y locales
+## Alineamientos globales y locales
 
 Para ejecutar los ejemplos, instala el paquete `bio`:
 
@@ -402,7 +397,7 @@ THIS--LINE-
 
 En los ejemplos a continuación, utilizaremos secuencias proteicas hipotéticas `THISLINE` e `ISALIGNED`, palabras reales que también resultan ser secuencias peptídicas válidas. Estas secuencias se utilizaron por primera vez con un propósito similar, aunque en un contexto diferente, en el libro *Understanding Bioinformatics* de Marketa Zvelebil y Jeremy Baum.
 
-### ¿Qué es una alineamiento global?
+### ¿Qué es una alineamiento global? - Algoritmo de Needleman-Wunsch
 
 ![image](https://microbenotes.com/wp-content/uploads/2023/03/Global-and-Local-Alignment-of-two-sequences.jpg)
 
@@ -476,7 +471,7 @@ Tenga en cuenta cuán radicalmente diferente es el segundo alineamiento que de l
 
 Recuerde, un alineamiento encuentra la disposición que maximiza la puntuación de recompensas y penalizaciones en todas las secuencias.
 
-### ¿Qué es un alineamieto local?
+### ¿Qué es un alineamieto local? - Algoritmo de Smith-Waterman
 
 **Los alineamientos locales se utilizan cuando necesitamos encontrar la región de similitud máxima entre dos secuencias.** 
 
@@ -617,7 +612,7 @@ conda activate bioinfo
 mamba install -c bioconda mafft exonerate lastz
 ```
 
-## Recursos útiles
+### Recursos útiles
 
 - [MAFFT](https://mafft.cbrc.jp/alignment/software/)
 - [Exonerate](https://www.ebi.ac.uk/about/vertebrate-genomics/software/exonerate)
