@@ -69,7 +69,7 @@ La “mejor” alineación depende de cómo valoras la forma en que se alinean l
 
 > **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
 
-El concepto más importante de alineamiento es el siguiente:
+**El concepto más importante de alineamiento es el siguiente:**
 
 - `No existe un alineamiento universalmente mejor.`
 - `Solo existe el mejor alineamiento en relación con una elección de puntuación. Cambiar la puntuación generalmente cambiará lo que se selecciona como el mejor alineamiento.`
