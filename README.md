@@ -71,7 +71,9 @@ La “mejor” alineación depende de cómo valoras la forma en que se alinean l
 
 El concepto más importante de alineamiento es el siguiente:
 
-`No existe un alineamiento universalmente mejor. Solo existe el mejor alineamiento en relación con una elección de puntuación. Cambiar la puntuación generalmente cambiará lo que se selecciona como el mejor alineamiento. Los algoritmos de alineamiento encuentran la disposición que produce la puntuación máxima en toda el alineamiento.`
+- `No existe un alineamiento universalmente mejor.`
+- `Solo existe el mejor alineamiento en relación con una elección de puntuación. Cambiar la puntuación generalmente cambiará lo que se selecciona como el mejor alineamiento.`
+- `Los algoritmos de alineamiento encuentran la disposición que produce la puntuación máxima en toda el alineamiento.`
 
 Los algoritmos de alineamiento de secuencias aceleran el proceso de seleccionar el alineamiento con la mejor puntuación. Puedes pensar en los alineadores como métodos para evaluar rápidamente todas las combinaciones posibles y, de esas, elegir los alineamientos con la mejor puntuación.
 
