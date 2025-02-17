@@ -159,7 +159,94 @@ Elegir la matriz adecuada, especialmente para secuencias de proteínas, es aún 
 
 ## Tipos de matrices de puntuación
 
-Existen dos tipos de matrices de puntuación: para nucleótidos y para proteínas. Las matrices de proteínas vienen en muchas variantes, calculadas bajo diferentes suposiciones sobre lo que significa la similitud. Además, las matrices de puntuación pueden estar normalizadas o no, lo cual debe tenerse en cuenta al comparar puntuaciones.
+### 1. **Matrices para secuencias de nucleótidos (ADN/ARN)**
+Estas matrices son más simples, ya que solo hay 4 bases posibles (A, T, C, G para ADN; A, U, C, G para ARN). Las más utilizadas son:
+
+#### a) **Matriz de identidad**
+   - Asigna un valor fijo para coincidencias y otro para discrepancias.
+   - Ejemplo:
+     - Coincidencia: +1
+     - Discrepancia: -1
+   - Es útil para alineamientos simples, pero no tiene en cuenta las sustituciones más probables en la evolución.
+
+#### b) **Matriz de sustitución de nucleótidos**
+   - Asigna puntuaciones basadas en la probabilidad de que una base se sustituya por otra durante la evolución.
+   - Ejemplo: Matriz **NUC.4.4** (usada en BLAST):
+     - Coincidencia A-A: +5
+     - Coincidencia A-T: -4 (penalización porque A y T no suelen sustituirse fácilmente).
+
+---
+
+### 2. **Matrices para secuencias de proteínas (aminoácidos)**
+Estas matrices son más complejas, ya que hay 20 aminoácidos posibles. Las más utilizadas son:
+
+#### a) **Matrices PAM (Point Accepted Mutation)**
+   - Desarrolladas por Margaret Dayhoff en 1978.
+   - Basadas en la probabilidad de que un aminoácido se sustituya por otro en secuencias evolutivamente relacionadas.
+   - Ejemplos:
+     - **PAM1:** Representa un 1% de cambio en las secuencias.
+     - **PAM250:** Representa un 250% de cambio (más útil para secuencias distantes).
+   - Las matrices PAM son útiles para estudiar relaciones evolutivas a largo plazo.
+
+#### b) **Matrices BLOSUM (BLOcks SUbstitution Matrix)**
+   - Desarrolladas por Steven Henikoff y Jorja Henikoff en 1992.
+   - Basadas en bloques conservados de secuencias de proteínas.
+   - Ejemplos:
+     - **BLOSUM62:** Ideal para secuencias moderadamente relacionadas (usada por defecto en BLAST).
+     - **BLOSUM45:** Para secuencias más distantes.
+     - **BLOSUM80:** Para secuencias muy similares.
+   - Las matrices BLOSUM son más utilizadas que las PAM en la actualidad.
+
+#### c) **Matrices especializadas**
+   - Algunas matrices están diseñadas para casos específicos, como:
+     - **Matrices para dominios proteicos:** Se enfocan en regiones específicas de las proteínas.
+     - **Matrices para secuencias transmembrana:** Consideran las propiedades físicas de los aminoácidos en membranas celulares.
+
+---
+
+### 3. **Matrices personalizadas**
+   - En algunos casos, se pueden crear matrices de puntuación personalizadas basadas en datos específicos del estudio. Por ejemplo:
+     - Si se trabaja con un conjunto de secuencias muy específico (como virus o bacterias), se puede calcular una matriz que refleje las sustituciones más comunes en ese grupo.
+
+---
+
+### 4. **Matrices con penalización por gaps**
+   - Además de las matrices de sustitución, es necesario definir cómo se penalizan los espacios (gaps) en un alineamiento. Esto se hace con dos parámetros:
+     - **Penalización por abrir un gap (gap open):** Penaliza el inicio de un espacio.
+     - **Penalización por extender un gap (gap extend):** Penaliza cada espacio adicional después del primero.
+   - Ejemplo:
+     - Gap open: -10
+     - Gap extend: -1
+
+---
+
+### 5. **Matrices normalizadas**
+   - Algunas matrices están normalizadas para facilitar la comparación de puntuaciones entre diferentes alineamientos. Esto es especialmente útil cuando se comparan secuencias de longitudes muy diferentes.
+
+---
+
+### Resumen de los tipos de matrices
+
+| **Tipo de matriz**       | **Aplicación**                                                                 | **Ejemplos**                     |
+|---------------------------|-------------------------------------------------------------------------------|----------------------------------|
+| **Identidad**             | Alineamientos simples de nucleótidos.                                         | Coincidencia: +1, Discrepancia: -1 |
+| **NUC.4.4**               | Alineamientos de nucleótidos con sustituciones probables.                     | Usada en BLAST.                  |
+| **PAM**                   | Estudios evolutivos de proteínas (secuencias distantes).                      | PAM1, PAM250.                    |
+| **BLOSUM**                | Alineamientos de proteínas (secuencias moderadamente relacionadas o similares).| BLOSUM62, BLOSUM45.              |
+| **Especializadas**        | Casos específicos (dominios proteicos, membranas, etc.).                      | Matrices personalizadas.         |
+| **Con penalización gaps** | Define cómo se penalizan los espacios en un alineamiento.                     | Gap open: -10, Gap extend: -1.   |
+
+---
+
+### ¿Cómo elegir la matriz adecuada?
+La elección de la matriz depende de:
+1. **Tipo de secuencia:** ¿Es ADN, ARN o proteína?
+2. **Grado de similitud:** ¿Son secuencias muy similares o distantes?
+3. **Objetivo del estudio:** ¿Es un análisis evolutivo, funcional o estructural?
+
+Por ejemplo:
+- Para alinear secuencias de proteínas moderadamente relacionadas, usa **BLOSUM62**.
+- Para secuencias de ADN, usa **NUC.4.4** o una matriz de identidad.
 
 ## Otras propiedades de las matrices de puntuación
 
