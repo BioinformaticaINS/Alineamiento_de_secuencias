@@ -65,7 +65,9 @@ GATCA--      GAT--CA      GA-T-CA
 
 ¿Cuál de estas es la alineación “mejor”, “correcta” o “significativa”?
 
-La “mejor” alineación depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
+La “mejor” alineación depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? 
+
+> **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
 
 El concepto más importante de alineamiento es el siguiente:
 
