@@ -6,7 +6,7 @@ El alineamiento de secuencias es una de las tareas fundamentales en bioinformát
 
 ## ¿Qué es una alineamiento de secuencias?
 
-Una alineación de secuencias (específicamente alineación por pares) significa **organizar dos secuencias de forma que las regiones con similitudes se alineen**. Por ejemplo, la alineación de `GATTACA` y `GATCA` podría verse así:
+Una alineamiento de secuencias (específicamente alineamiento por pares) significa **organizar dos secuencias de forma que las regiones con similitudes se alineen**. Por ejemplo, el alineamiento de `GATTACA` y `GATCA` podría verse así:
 
 ```
 GATTACA
@@ -14,7 +14,7 @@ GATTACA
 GATCA--
 ```
 
-A simple vista, las alineaciones suelen tener sentido de forma intuitiva, pero cuidado, ya que nuestra intuición puede ser engañosa. Y cada persona puede intuir una alineación diferente.
+A simple vista, las alineaciones suelen tener sentido de forma intuitiva, pero cuidado, ya que nuestra intuición puede ser engañosa. Y cada persona puede intuir una alineamiento diferente.
 
 Nuestro cerebro tiende a identificar patrones y similitudes de manera natural. Una vez que percibimos una similitud, nos resulta difícil reconocer otras alternativas que podrían ser igual de buenas (o incluso mejores) que la que estamos observando. Es difícil “dejar de ver” un patrón. Por ejemplo, podríamos haber dispuesto las secuencias así:
 
@@ -63,9 +63,9 @@ GATTACA      GATTACA      GATTACA
 GATCA--      GAT--CA      GA-T-CA
 ```
 
-¿Cuál de estas es la alineación “mejor”, “correcta” o “significativa”?
+¿Cuál de estas es el alineamiento “mejor”, “correcta” o “significativa”?
 
-La “mejor” alineación depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? 
+La “mejor” alineamiento depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? 
 
 > **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
 
@@ -123,7 +123,7 @@ cat NUC.4.4
 
 El archivo muestra que la contribución de puntuación por hacer coincidir una A con una A es de 5 puntos, mientras que la contribución de una coincidencia entre una A y una T es de -4 puntos (es decir, una penalización de 4 puntos).
 
-Al observar visualmente la matriz de puntuación anterior, ya podemos deducir que favorecerá las discrepancias. Por ejemplo, generará fácilmente una alineación con discrepancias de la siguiente forma:
+Al observar visualmente la matriz de puntuación anterior, ya podemos deducir que favorecerá las discrepancias. Por ejemplo, generará fácilmente una alineamiento con discrepancias de la siguiente forma:
 
 ```bash
 pip install bio --upgrade
@@ -145,7 +145,7 @@ La segunda coincidencia G/G añadirá 5 puntos, y esta contribución superará l
 bio align ATG ACG --local -match 4 -mismatch 5
 ```
 
-la alineación local sería simplemente:
+el alineamiento local sería simplemente:
 
 ```
 A
@@ -153,7 +153,7 @@ A
 A
 ```
 
-La alineación no puede extenderse más hacia la izquierda, ya que **"no vale la pena"** añadir una penalización de -5 cuando la recompensa es solo de 4.
+el alineamiento no puede extenderse más hacia la izquierda, ya que **"no vale la pena"** añadir una penalización de -5 cuando la recompensa es solo de 4.
 
 Elegir la matriz adecuada, especialmente para secuencias de proteínas, es aún más complicado.
 
@@ -281,7 +281,7 @@ ATGC---TGATAACTGCGA
 
 Mientras que la palabra “espacio” es genérica y se refiere a cualquiera de las secuencias, si queremos ser más específicos, podríamos decir que el alineamiento anterior muestra tres deleciones de A y una inserción de G. La palabra “deleción” significa que la segunda secuencia tiene bases faltantes en comparación con la primera.
 
-Podríamos generar y mostrar esta misma alineación al revés:
+Podríamos generar y mostrar esta misma alineamiento al revés:
 
 ```
 ATGC---TGATAACTGCGA
@@ -305,7 +305,7 @@ Puedes leer más sobre cómo funciona el método `bio align` en [https://www.bio
 
 Los algoritmos de alineamiento en `bio align` utilizan la implementación de BioPython, ideal para uso interactivo y exploratorio al alinear secuencias relativamente cortas (de hasta aproximadamente 30 kb de longitud).
 
-El software especializado en alineación genómica suele operar con órdenes de magnitud más rápidos, aunque ajusta características a cambio de esa mayor velocidad. Dependiendo de tus necesidades, es posible que desees usar uno de los numerosos alineadores disponibles, como: `blast`, `blat`, `fasta36`, `mummer`, `minimap2`, `lastz`, `lastal`, `exonerate`, `vsearch`, `diamond`, etc.
+El software especializado en alineamiento genómica suele operar con órdenes de magnitud más rápidos, aunque ajusta características a cambio de esa mayor velocidad. Dependiendo de tus necesidades, es posible que desees usar uno de los numerosos alineadores disponibles, como: `blast`, `blat`, `fasta36`, `mummer`, `minimap2`, `lastz`, `lastal`, `exonerate`, `vsearch`, `diamond`, etc.
 
 La gran cantidad de opciones de alineadores, junto con el enorme número de parámetros que cada alineador permite personalizar, muestra que las alineaciones son tareas complejas y multifacéticas.
 
@@ -355,22 +355,22 @@ THIS--LINE-
 
 En los ejemplos a continuación, utilizaremos secuencias proteicas hipotéticas `THISLINE` e `ISALIGNED`, palabras reales que también resultan ser secuencias peptídicas válidas. Estas secuencias se utilizaron por primera vez con un propósito similar, aunque en un contexto diferente, en el libro *Understanding Bioinformatics* de Marketa Zvelebil y Jeremy Baum.
 
-### ¿Qué es una alineación global?
+### ¿Qué es una alineamiento global?
 
 ![image](https://microbenotes.com/wp-content/uploads/2023/03/Global-and-Local-Alignment-of-two-sequences.jpg)
 
-**Una alineación global busca maximizar las similitudes a lo largo de toda la longitud de las secuencias, lo que significa que intenta encontrar la mejor correspondencia de extremo a extremo para ambas secuencias.** Esta técnica es especialmente útil cuando las secuencias tienen tamaños similares y queremos compararlas en su totalidad.
+**Una alineamiento global busca maximizar las similitudes a lo largo de toda la longitud de las secuencias, lo que significa que intenta encontrar la mejor correspondencia de extremo a extremo para ambas secuencias.** Esta técnica es especialmente útil cuando las secuencias tienen tamaños similares y queremos compararlas en su totalidad.
 
-La herramienta `bio align`, por defecto, realiza una alineación semi-global. Esto significa que permite que haya "gaps" (huecos) al final de la secuencia de consulta (o "query") sin penalizarlos. En otras palabras, si al final de la consulta quedan bases sin alinear, no se les resta puntos. Este tipo de alineación es útil cuando queremos comparar una secuencia corta con una más larga, sin preocuparnos por los extremos.
+La herramienta `bio align`, por defecto, realiza una alineamiento semi-global. Esto significa que permite que haya "gaps" (huecos) al final de la secuencia de consulta (o "query") sin penalizarlos. En otras palabras, si al final de la consulta quedan bases sin alinear, no se les resta puntos. Este tipo de alineamiento es útil cuando queremos comparar una secuencia corta con una más larga, sin preocuparnos por los extremos.
 
-**Por otro lado, cuando hacemos una alineación global, tratamos de alinear las dos secuencias en toda su longitud, de principio a fin.** En este caso, cada base de una secuencia debe estar alineada con una base de la otra secuencia, o si no hay coincidencia, se coloca un “gap” en la segunda secuencia.
+**Por otro lado, cuando hacemos una alineamiento global, tratamos de alinear las dos secuencias en toda su longitud, de principio a fin.** En este caso, cada base de una secuencia debe estar alineada con una base de la otra secuencia, o si no hay coincidencia, se coloca un “gap” en la segunda secuencia.
 
 Ejemplo: Imagina que tienes dos secuencias de ADN:
 
 - Secuencia 1 (consulta): ACTG
 - Secuencia 2: GACTGA
 
-En una alineación semi-global, el programa puede hacer algo como esto:
+En una alineamiento semi-global, el programa puede hacer algo como esto:
 
 ```
    ACTG
@@ -379,7 +379,7 @@ En una alineación semi-global, el programa puede hacer algo como esto:
 ```
 Aquí, las bases coinciden sin importar que al final de la segunda secuencia haya más letras.
 
-En cambio, en una alineación global, se alinea la totalidad de ambas secuencias y se usan “gaps” cuando es necesario para mantener la longitud. Así se vería:
+En cambio, en una alineamiento global, se alinea la totalidad de ambas secuencias y se usan “gaps” cuando es necesario para mantener la longitud. Así se vería:
 
 ```
  -ACTG-
@@ -413,7 +413,7 @@ También podemos anular la brecha abierta y la penalización de extensión de la
 bio align THISLINE ISALIGNED --global --open 7
 ```
 
-ahora la alineación se ve así:
+ahora el alineamiento se ve así:
 
 ```
 # seq1 (8) vs seq2 (9)
@@ -451,7 +451,7 @@ NE
 NE
 ```
 
-El algoritmo nos dice que estos dos aminoácidos coincidentes producen la puntuación más alta posible (11 en este caso) y cualquier otra alineación local entre las dos secuencias producirá una puntuación peor que 11.
+El algoritmo nos dice que estos dos aminoácidos coincidentes producen la puntuación más alta posible (11 en este caso) y cualquier otra alineamiento local entre las dos secuencias producirá una puntuación peor que 11.
 
 Podemos usar otras matrices de puntuación como se muestra en ftp://ftp.ncbi.nlm.nih.gov/blast/matrices/, muchos de estos están incluidos con bio.
 
@@ -465,11 +465,11 @@ wget ftp://ftp.ncbi.nlm.nih.gov/blast/matrices/NUC.4.4
 wget -nc ftp://ftp.ncbi.nlm.nih.gov/blast/matrices/BLOSUM30
 ```
 
-Obsérvese cómo la alineación local se ve afectada por el esquema de puntuación.
+Obsérvese cómo el alineamiento local se ve afectada por el esquema de puntuación.
 
 ```
 bio align THISLINE ISALIGNED -matrix BLOSUM30 --local
-Usando el BLOSUM90 el esquema de puntuación produce una alineación mucho más larga:
+Usando el BLOSUM90 el esquema de puntuación produce una alineamiento mucho más larga:
 
 # seq1 (4) vs seq2 (4)
 # pident=50.0% len=4 ident=2 mis=2 del=0 ins=0
@@ -494,7 +494,7 @@ Selección de la Matriz de Puntuación de Similitud Correcta por William Pearson
 
 Aquí hay algunas líneas del resumen:
 
-Si bien las matrices “deep” proporcionan búsquedas de similitud muy sensibles, también requieren alineaciones de secuencia más largas y, a veces, pueden producir una sobreextensión de alineación en regiones no homólogas. Las matrices de puntuación más superficiales son más efectivas cuando se buscan dominios proteicos cortos, o cuando el objetivo es limitar el alcance de la búsqueda a secuencias que probablemente sean ortólogas entre organismos recientemente divergentes.
+Si bien las matrices “deep” proporcionan búsquedas de similitud muy sensibles, también requieren alineaciones de secuencia más largas y, a veces, pueden producir una sobreextensión de alineamiento en regiones no homólogas. Las matrices de puntuación más superficiales son más efectivas cuando se buscan dominios proteicos cortos, o cuando el objetivo es limitar el alcance de la búsqueda a secuencias que probablemente sean ortólogas entre organismos recientemente divergentes.
 
 ![image](figures/ortologos_paralogos.png)
 
