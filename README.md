@@ -50,12 +50,12 @@ Cada alineamiento está determinada por dos factores:
 
 Recuerda siempre que:
 
-- **Diferentes algoritmos suelen producir alineaciones diferentes para las mismas secuencias.**
-- **Diferentes puntuaciones también suelen generar alineaciones distintas para las mismas secuencias.**
+- **Diferentes algoritmos suelen producir diferentes alineamientos para las mismas secuencias.**
+- **Diferentes puntuaciones también suelen generar distintos alineamientos para las mismas secuencias.**
 
-## ¿Cómo se generan las alineaciones?
+## ¿Cómo se generan los alineamientos?
 
-Supón que tienes las siguientes alineaciones de `GATTACA` con `GATCA`:
+Supón que tienes las siguientes alineamiento de las secuencias `GATTACA` con `GATCA`:
 
 ```
 GATTACA      GATTACA      GATTACA
@@ -63,9 +63,11 @@ GATTACA      GATTACA      GATTACA
 GATCA--      GAT--CA      GA-T-CA
 ```
 
-¿Cuál de estas es el alineamiento “mejor”, “correcta” o “significativa”?
+¿Cuál de estas es el alineamiento considerado como “mejor”, “correcta” o “significativa”?
 
-La “mejor” alineamiento depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? 
+El “mejor” alineamiento depende de cómo valoras la forma en que se alinean las bases. 
+
+¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? 
 
 > **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
 
@@ -165,15 +167,15 @@ Estas matrices son más simples, ya que solo hay 4 bases posibles (A, T, C, G pa
 #### a) **Matriz de identidad**
    - Asigna un valor fijo para coincidencias y otro para discrepancias.
    - Ejemplo:
-     - Coincidencia: +1
-     - Discrepancia: -1
+     - Coincidencia: `+1`
+     - Discrepancia: `-1`
    - Es útil para alineamientos simples, pero no tiene en cuenta las sustituciones más probables en la evolución.
 
 #### b) **Matriz de sustitución de nucleótidos**
    - Asigna puntuaciones basadas en la probabilidad de que una base se sustituya por otra durante la evolución.
    - Ejemplo: Matriz **NUC.4.4** (usada en BLAST):
-     - Coincidencia A-A: +5
-     - Coincidencia A-T: -4 (penalización porque A y T no suelen sustituirse fácilmente).
+     - Coincidencia A-A: `+5`
+     - Coincidencia A-T: `-4` (penalización porque A y T no suelen sustituirse fácilmente).
 
 ---
 
