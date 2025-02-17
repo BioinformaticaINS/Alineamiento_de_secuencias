@@ -247,11 +247,7 @@ La matriz de sustitución define la puntuación de cada coincidencia y desajuste
    - **BLOSUM30** es útil para secuencias distantes (más permisiva con desajustes).
    - **BLOSUM90** es más restrictiva y adecuada para secuencias más similares.
 
-Selección de la Matriz de Puntuación de Similitud Correcta por William Pearson, el autor del programa FASTA.
-
-Aquí hay algunas líneas del resumen:
-
-Si bien las matrices “deep” proporcionan búsquedas de similitud muy sensibles, también requieren alineaciones de secuencia más largas y, a veces, pueden producir una sobreextensión de alineamiento en regiones no homólogas. Las matrices de puntuación más superficiales son más efectivas cuando se buscan dominios proteicos cortos, o cuando el objetivo es limitar el alcance de la búsqueda a secuencias que probablemente sean ortólogas entre organismos recientemente divergentes.
+En su artículo "Selecting the Right Similarity-Scoring Matrix", Pearson discute cómo las matrices "profundas" (como BLOSUM62) son útiles para detectar homologías distantes, pero pueden generar alineamientos sobreextendidos en regiones no homólogas. Por otro lado, las matrices "superficiales" son más efectivas para dominios proteicos cortos o secuencias recientemente divergentes (https://pubmed.ncbi.nlm.nih.gov/24509512/)
 
 ![image](https://biodataprog.github.io/GEN220_2019/Bioinformatics/images/orthologs.gif)
 
