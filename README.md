@@ -4,7 +4,7 @@
 
 El alineamiento de secuencias es una de las tareas fundamentales en bioinformática, ya que nos permite comparar secuencias de ADN, ARN o proteínas para identificar similitudes, diferencias y relaciones evolutivas. Esto es esencial para entender la función de genes, predecir estructuras proteicas y estudiar la evolución molecular.
 
-## 2. ¿Qué es una alineamiento de secuencias?
+## ¿Qué es una alineamiento de secuencias?
 
 Una alineación de secuencias (específicamente alineación por pares) significa **organizar dos secuencias de forma que las regiones con similitudes se alineen**. Por ejemplo, la alineación de `GATTACA` y `GATCA` podría verse así:
 
@@ -34,25 +34,26 @@ GA-T-CA
 
 Aquí vemos dos alineaciones más de las mismas secuencias que también parecen concordar bastante bien. Una vez que observamos un patrón, puede llevar un esfuerzo considerable notar que podríamos haber ordenado las letras de otras formas igual de válidas.
 
-## ¿Para qué se usan las alineaciones?
+## ¿Para qué se utilizan los alineamiento de secuencias?
 
-Las alineaciones tienen dos aplicaciones principales:
+Los alineamientos tienen dos casos de uso principales:
 
-![image](figures/alineacione1.png)
+* **Encontrar regiones similares entre dos secuencias: investigar la relación entre secuencias.**
+* **Encontrar qué secuencia (entre muchas alternativas) es más similar a una secuencia de consulta (entrada)**
 
-## ¿Qué determina una alineación?
+## ¿Qué determina un alineamiento?
 
-Cada alineación está determinada por dos factores:
+Cada alineamiento está determinada por dos factores:
 
-1. **Algoritmo de alineación**: global y local .
-2. **Puntuación de alineación (parámetros)**: valores numéricos que ajustan la disposición.
+1. **Algoritmo de alineamiento**: global y local .
+2. **Puntuación de alineamiento (parámetros)**: valores numéricos que ajustan la disposición.
 
-| Recuerda siempre que:
+Recuerda siempre que:
 
 - **Diferentes algoritmos suelen producir alineaciones diferentes para las mismas secuencias.**
 - **Diferentes puntuaciones también suelen generar alineaciones distintas para las mismas secuencias.**
 
-### ¿Cómo se generan las alineaciones?
+## ¿Cómo se generan las alineaciones?
 
 Supón que tienes las siguientes alineaciones de `GATTACA` con `GATCA`:
 
@@ -66,24 +67,24 @@ GATCA--      GAT--CA      GA-T-CA
 
 La “mejor” alineación depende de cómo valoras la forma en que se alinean las bases. ¿Consideras que una discrepancia es menos perturbadora que los espacios vacíos? **El valor que asignes a una coincidencia, discrepancia o espacio vacío se denomina puntuación.**
 
-## Concepto fundamental de la alineación:
+El concepto más importante de alineamiento es el siguiente:
 
-No existe una alineación universalmente mejor. **Solo existe la mejor alineación relativa a una elección de puntuación.** Cambiar la puntuación generalmente cambia la alineación seleccionada como mejor. Los algoritmos de alineación encuentran la disposición que maximiza la puntuación total de la alineación.
+`No existe un alineamiento universalmente mejor. Solo existe el mejor alineamiento en relación con una elección de puntuación. Cambiar la puntuación generalmente cambiará lo que se selecciona como el mejor alineamiento. Los algoritmos de alineamiento encuentran la disposición que produce la puntuación máxima en toda el alineamiento.`
 
-Los algoritmos de alineación aceleran el proceso de seleccionar la alineación con la mejor puntuación. Puedes pensar en los alineadores como métodos para evaluar rápidamente todas las combinaciones posibles y luego seleccionar las alineaciones con la puntuación más alta.
+Los algoritmos de alineamiento de secuencias aceleran el proceso de seleccionar el alineamiento con la mejor puntuación. Puedes pensar en los alineadores como métodos para evaluar rápidamente todas las combinaciones posibles y, de esas, elegir los alineamientos con la mejor puntuación.
 
-## ¿Cómo funciona la puntuación de alineación?
+## ¿Cómo funciona la puntuación de alineamiento?
 
 Las puntuaciones son valores, tanto positivos como negativos, que un algoritmo asignará a varias bases al alinearlas de cierta manera. Un alineador intenta crear una disposición que maximice la puntuación.
 
 Por ejemplo, podríamos elegir las siguientes puntuaciones:
 
-- 1 punto por coincidencia.
-- -1 punto por discrepancia.
-- -2 puntos por abrir un espacio.
-- -1 punto por extender un espacio ya abierto.
+- `1` punto por coincidencia.
+- `-1` punto por discrepancia.
+- `-2` puntos por abrir un espacio.
+- `-1` punto por extender un espacio ya abierto.
 
-Luego le indicamos al alineador que encuentre las mejores alineaciones utilizando estas puntuaciones. Con este sistema, las alineaciones se puntuarían así (las puntuaciones se muestran en la parte inferior):
+Luego le indicamos al alineador que encuentre los mejores alineamientos utilizando estas puntuaciones. Con este sistema, los alineamientos se puntuarían así (las puntuaciones se muestran en la parte inferior):
 
 ```
 GATTACA      GATTACA      GATTACA
@@ -93,7 +94,7 @@ GATCA--      GAT--CA      GA-T-CA
    0            2             1
 ```
 
-Con esta puntuación, la segunda alineación tiene la puntuación más alta (2) y se considera la "mejor" alineación.
+Con esta puntuación, el segundo alineamiento tiene la puntuación más alta (2) y se considera el "mejor" alineamiento.
 
 Cuando las secuencias tienen diferentes longitudes, a menudo queremos encontrar la secuencia más larga que cubra la secuencia más corta. Para ajustar esto, aplicamos una corrección que no penaliza los espacios al final de ninguna de las secuencias. Si aplicamos esta corrección, las puntuaciones serían:
 
@@ -105,7 +106,7 @@ GATCA--      GAT--CA      GA-T-CA
    3            2             1
 ```
 
-Ahora, la primera alineación tiene la puntuación máxima y se convierte en la "mejor alineación". Otros cambios en la puntuación podrían afectar qué alineación se considera mejor.
+Ahora, el primer alineamiento tiene la puntuación máxima y se convierte en el "mejor alineamiento". Otros cambios en la puntuación podrían afectar qué el alineamiento se considere mejor.
 
 ## ¿Cómo elijo las puntuaciones?
 
@@ -160,9 +161,9 @@ Existen dos tipos de matrices de puntuación: para nucleótidos y para proteína
 
 Las matrices de puntuación generalmente no incluyen penalizaciones para los espacios. La penalización por extensión de un espacio es típicamente mucho menor que la penalización por abrir uno, lo que tiene una justificación biológica.
 
-## Cómo se muestran las alineaciones
+## Cómo se muestran los alineamientos
 
-No existe un formato universal para mostrar alineaciones, pero comúnmente usamos un formato visual con caracteres adicionales para interpretarlas:
+No existe un formato universal para mostrar alineamientos, pero comúnmente usamos un formato visual con caracteres adicionales para interpretarlas:
 
 - El carácter `-` indica un espacio.
 - El carácter `|` muestra una coincidencia.
@@ -178,13 +179,9 @@ ATGC---TGATAACTGCGA
 
 De las bases anteriores, 13 son iguales (13 identidades), 5 bases están ausentes (5 espacios), y 2 bases son diferentes (2 discrepancias).
 
-Aquí tienes la traducción:
-
----
-
 ## ¿Importa cuál secuencia está en la parte superior?
 
-Usualmente, a menos que se indique explícitamente lo contrario, leemos e interpretamos la alineación como si estuviéramos comparando la secuencia inferior con la superior.
+Usualmente, a menos que se indique explícitamente lo contrario, leemos e interpretamos el alineamiento como si estuviéramos comparando la secuencia inferior con la superior.
 
 ```
 ATGCAAATGACAAAT-CGA
@@ -270,9 +267,9 @@ En los ejemplos a continuación, utilizaremos secuencias proteicas hipotéticas 
 
 ### ¿Qué es una alineación global?
 
-![image](figures/globla_local_alignment.png)
+![image](https://microbenotes.com/wp-content/uploads/2023/03/Global-and-Local-Alignment-of-two-sequences.jpg)
 
-Una alineación global busca maximizar las similitudes a lo largo de toda la longitud de las secuencias, lo que significa que intenta encontrar la mejor correspondencia de extremo a extremo para ambas secuencias. Esta técnica es especialmente útil cuando las secuencias tienen tamaños similares y queremos compararlas en su totalidad.
+**Una alineación global busca maximizar las similitudes a lo largo de toda la longitud de las secuencias, lo que significa que intenta encontrar la mejor correspondencia de extremo a extremo para ambas secuencias.** Esta técnica es especialmente útil cuando las secuencias tienen tamaños similares y queremos compararlas en su totalidad.
 
 La herramienta `bio align`, por defecto, realiza una alineación semi-global. Esto significa que permite que haya "gaps" (huecos) al final de la secuencia de consulta (o "query") sin penalizarlos. En otras palabras, si al final de la consulta quedan bases sin alinear, no se les resta puntos. Este tipo de alineación es útil cuando queremos comparar una secuencia corta con una más larga, sin preocuparnos por los extremos.
 
